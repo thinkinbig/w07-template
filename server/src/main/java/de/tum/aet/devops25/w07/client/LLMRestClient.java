@@ -29,11 +29,17 @@ public class LLMRestClient {
     public String generateRecommendations(List<String> favoriteMenu, List<String> todaysMenu) {
         try {
             // TODO Create request body
+            RecommendRequest request = new RecommendRequest(favoriteMenu, todaysMenu);
 
             // TODO Make REST call using this.restClient
+            RecommendResponse response = this.restClient.post()
+                    .uri("/recommend")
+                    .body(request)
+                    .retrieve()
+                    .body(RecommendResponse.class);
 
             // TODO Extract the recommendation
-            return "";
+            return response.recommendation();
 
         } catch (Exception e) {
             System.err.println("Error calling LLM REST service: " + e.getMessage());

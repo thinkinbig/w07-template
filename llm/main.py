@@ -2,12 +2,14 @@ import os
 import json
 import requests
 from typing import Dict, Any, List, Optional
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from langchain.llms.base import LLM
 from langchain_core.prompts import PromptTemplate
 from langchain.callbacks.manager import CallbackManagerForLLMRun
 
+load_dotenv()
 # Environment configuration
 CHAIR_API_KEY = os.getenv("CHAIR_API_KEY")
 API_URL = "https://gpu.aet.cit.tum.de/api/chat/completions"
@@ -52,7 +54,7 @@ class OpenWebUILLM(LLM):
     
     api_url: str = API_URL
     api_key: str = CHAIR_API_KEY
-    model_name: str = "llama3:latest"
+    model_name: str = "llama3.3:latest"
     
     @property
     def _llm_type(self) -> str:
@@ -193,7 +195,7 @@ async def recommend(req: RecommendRequest) -> RecommendResponse:
         todays_meals_str = ", ".join(req.todays_menu)
         
         # TODO Use LangChain to generate recommendation
-        recommendation = ""
+        recommendation = recommendation_chain.invoke({"favorite_menu": favorite_meals_str, "todays_menu": todays_meals_str})
         
         # Return the LLM response as the recommendation
         return RecommendResponse(recommendation=recommendation)

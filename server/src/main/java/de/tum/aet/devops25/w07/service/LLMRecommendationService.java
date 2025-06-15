@@ -30,7 +30,7 @@ public class LLMRecommendationService {
                     .collect(Collectors.toList());
 
             // TODO Call REST client
-            return "";
+            return llmRestClient.generateRecommendations(favoriteMeals, todayMealNames);
 
         } catch (Exception e) {
             System.err.println("Error fetching recommendation from LLM service: " + e.getMessage());

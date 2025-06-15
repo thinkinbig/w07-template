@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package tum.mensa;
+
+service MealRecommendationService {
+    rpc RecommendMeal (MealRecommendationRequest) returns (MealRecommendationResponse);
+}
+
+message MealRecommendationRequest {
+    string user_id = 1;
+    repeated string favorite_menu = 2;
+    repeated string todays_menu = 3;
+}
+
+message MenuMeal {
+    string name = 1;
+    string description = 2;
+    repeated string tags = 3;
+}
+
+message MealRecommendationResponse {
+    string recommendation = 1;
+    bool is_final = 2;
+}
